@@ -16,17 +16,25 @@ It is organised so that additional models can be added over time.
 
 ```
 tools/            reusable analysis tooling (image unpacker, fetch+verify helper)
+docs/             cross-model topics (e.g. wireless CarPlay / Android Auto feasibility)
 platforms/        per-SoC-platform notes shared by many models
   gerda/          Panasonic "Gerda" (dual Cortex-A9 AMP: uITRON + Linux)
+  km951/          newer wireless-projection platform (encrypted .avh) — stub
 models/           per-model findings
   sph-da230dab/   Pioneer SPH-DA230DAB (and the shared CVJ2392/CVJ4842 image family)
 ```
 
 ## Platforms covered
 
-| Platform | SoC | CPU | OS split | Models (so far) |
-|----------|-----|-----|----------|-----------------|
-| [gerda](platforms/gerda/) | Panasonic *Gerda* | dual ARM Cortex-A9 (AMP) | uITRON (HMI/audio) + Linux (phone link) | SPH-DA230DAB, MVH-Z5050BT, AVH-Z#### / DMH-Z#### (2017 line) |
+| Platform | Internal code | SoC / OS | Wireless CP/AA | Models (so far) |
+|----------|---------------|----------|----------------|-----------------|
+| [gerda](platforms/gerda/) | KM769 (and KM770/KM775) | Panasonic *Gerda*, dual Cortex-A9, uITRON + Linux | wired only | SPH-DA230DAB, MVH-2300NEX, MVH-Z5050BT, AVH-Z#### / DMH-Z#### (2017–19) |
+| [km951](platforms/km951/) | KM951 | newer (Qualcomm-class / Android-scale); **encrypted .avh** | wireless CarPlay | DMH-ZF9350BT, DMH-Z6350BT |
+
+## Topics
+
+- [docs/wireless-carplay-android-auto.md](docs/wireless-carplay-android-auto.md) — can a wired
+  unit be made to do wireless CarPlay/Android Auto? Cross-model comparison + the honest answer.
 
 ## Tools
 
