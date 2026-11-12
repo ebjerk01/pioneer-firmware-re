@@ -1,0 +1,15 @@
+# Never commit proprietary firmware or anything carved from it
+*.avh
+*.zip
+*.bin
+*.sqsh
+*.dtb
+*.img
+fw/
+out/
+extract/
+rootfs/
+**/rootfs_*/
+# scratch
+*.log
+__pycache__/
