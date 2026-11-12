@@ -26,7 +26,7 @@ chip — see the platform's [Bluetooth/Wi-Fi architecture](../platforms/gerda/RE
 | **SPH-DA230DAB** (this project) | **KM769** | Panasonic **Gerda**, dual Cortex-A9, uITRON + Linux 3.14 | none (wired only) | 56 MB `.avh`, **plaintext, unsigned** | analysed |
 | MVH-2300NEX / MVH-Z5050BT | KM769 | same Gerda image | none | same image | wired siblings |
 | **DMH-ZF9350BT** | **KM951** | newer platform (Qualcomm-class / Android-scale) | **wireless CarPlay** (wired AA) | **247 MB** `.avh`, **packed/encrypted** (entropy ≈ 7.98/8) | downloaded, see below |
-| SPH-EVO93DAB | (unconfirmed) | (unconfirmed) | wireless CP **and** AA | firmware not obtainable here | styling successor; platform not confirmed |
+| SPH-EVO93DAB | (unconfirmed) | (unconfirmed) | wireless CP **and** AA | firmware not archived / not obtainable here | styling successor; firmware versions 1.13→3.08, **added update authentication in v3.07 (2025)** — i.e. the signed/newer generation |
 
 **The finding:** Pioneer's wireless units are a **different, newer platform generation**
 (KM9xx) with a much larger, **encrypted** firmware, whereas the Gerda wired generation

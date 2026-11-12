@@ -80,6 +80,11 @@ the image) on a ~2015 Cortex-A9, drawing a bitmap/HW-layer UI from NOR flash. So
   A second ASCII copy of the version sits in the app's build-info table right after the
   string `0123456789ABCDEF` (at 0x0059B1B0 in this image). Confirmed across versions:
   `CVJ2392-J`/`08.23`, `CVJ4842-B`/`18.24`, `CVJ2392-H`/`08.21`.
+- **Signing trajectory (context):** the DA230/Gerda generation predates Pioneer adding update
+  authentication. Pioneer's own change history for the newer **SPH-EVO93DAB** records that
+  **Ver 3.07 (2025) "adds an authentication function for current and future software updates"** —
+  i.e. signing was introduced on a later platform. The Gerda `.avh` here has none of that, and
+  its last firmware (8.24, Feb 2020) was never retrofitted.
 - Internally the platform is **KM769**; the model table lists sibling identities
   SPH-DA230DAB / MVH-2300NEX / MVH-Z5050BT (KM769) and SPH-DA130DAB / MVH-1400NEX /
   SPH-DA138TV (KM770), AVH-ZL5150BT (KM775).
