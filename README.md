@@ -48,6 +48,9 @@ models/           per-model findings
   a `.avh` (the images are unsigned and carry no stored checksum). **Flashing a mislabelled
   image can brick a unit — read the warning in the file.**
 
+- [`tools/patch_ui_speed.py`](tools/patch_ui_speed.py) — speed up the SPH-DA230DAB native UI
+  source/video transitions (patches the 200 ms step timers found via Ghidra; see MODS.md).
+
 ## Quick start
 
 ```sh
