@@ -64,13 +64,48 @@ the image) on a ~2015 Cortex-A9, drawing a bitmap/HW-layer UI from NOR flash. So
 - The Linux side (which we can read freely) renders none of the native UI — it only affects
   phone-projection smoothness (CarPlay/Android Auto/AppRadio), not the Pioneer menus.
 
+## Update mechanism, signing & versioning
+
+- **Updates are unsigned.** The `.avh` has no appended signature (tail is zero-padded, no
+  PKCS#7/ASN.1/RSA), and the image stores **no checksum of itself** that the device could
+  verify against. The only hash Pioneer ships is an MD5 inside the zip, checked by a Windows
+  `.bat` on the PC before copying to USB — it never reaches the unit. (The `RSA`/`PKCS`/
+  `verify` strings in the image are in the CarPlay/iAP auth libraries, not the updater.)
+- **What the unit checks is model + version**, stored as plain ASCII in a 44-byte metadata
+  header between the app and the kernel:
+  ```
+  0x01F01910  "CVJ2392-K"       file/model code (null-padded 16 bytes)
+  0x01F01920  "GERDAVER:08.24"  version tag (then 0xFF flash-erase padding — no CRC field)
+  ```
+  A second ASCII copy of the version sits in the app's build-info table right after the
+  string `0123456789ABCDEF` (at 0x0059B1B0 in this image). Confirmed across versions:
+  `CVJ2392-J`/`08.23`, `CVJ4842-B`/`18.24`, `CVJ2392-H`/`08.21`.
+- Internally the platform is **KM769**; the model table lists sibling identities
+  SPH-DA230DAB / MVH-2300NEX / MVH-Z5050BT (KM769) and SPH-DA130DAB / MVH-1400NEX /
+  SPH-DA138TV (KM770), AVH-ZL5150BT (KM775).
+- **Downgrade / relabel feasibility:** because there is no signature and no stored checksum,
+  the reported version is just two editable ASCII fields. `tools/set_version.py` rewrites both
+  (equal-length, so nothing shifts). A test bump of the 8.21 image to `08.25` changed exactly
+  **2 bytes** and the image stayed valid — i.e. nothing in the image integrity-checks those
+  bytes. In principle this lets an older build pass the unit's downgrade block.
+  **Caveat:** this is confirmed only at the image-structure level; the on-device updater's
+  exact flash-time behaviour has not yet been disassembled, and flashing a mislabelled image
+  to a single unit with no recovery path risks a brick. Do not flash blind — get a UART root
+  shell + full flash dump first.
+
+## uITRON app load address (recovered)
+
+The main-app ARM reset vector table is at image offset **0x1A00**, and the app loads such
+that **vaddr = file_offset + 0x200FE600** (so the vector table sits at a clean
+**0x20100000**). Verified: pointers resolve to real string starts (e.g. the pointer at
+0x5A9B60 → `SPH-DA130DAB`, 0x5A9BA4 → `Pioneer / AV Receiver`). Use this base to load the
+main-app region (file 0x1A00 onward) into a disassembler.
+
 ## Open threads
 
-1. Recover the uITRON app's load/base address (ARM reset vector table is at image offset
-   0x1A00; absolute data pointers cluster in 0x2000_0000 — base recovery still in progress)
-   so the main app can be loaded into a disassembler with correct addresses.
+1. Disassemble the on-device updater (now possible with base 0x200FE600) to confirm exactly
+   how it compares versions and that it does no extra flash-time validation.
 2. Map the uITRON HMI: display-layer compositor (`GD_LYR`, `dsp_layer_*`), the menu asset
    format, and the task structure.
 3. Map the ISC inter-core protocol (`isc_send`/`isc_receive` message formats).
-4. Map the full NOR/eMMC partition table (`mtdblock0..2`, `mtd6`, `mmcblk0p4`) and check
-   whether the on-device updater validates anything before accepting a custom `.avh`.
+4. Map the full NOR/eMMC partition table (`mtdblock0..2`, `mtd6`, `mmcblk0p4`).

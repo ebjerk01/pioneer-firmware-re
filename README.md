@@ -35,6 +35,9 @@ models/           per-model findings
   generalises across models on the same platform.
 - [`tools/fetch_firmware.sh`](tools/fetch_firmware.sh) — re-download the images for a model
   from the archived source URLs and verify their SHA-256.
+- [`tools/set_version.py`](tools/set_version.py) — show or rewrite the ASCII version tag(s) in
+  a `.avh` (the images are unsigned and carry no stored checksum). **Flashing a mislabelled
+  image can brick a unit — read the warning in the file.**
 
 ## Quick start
 
