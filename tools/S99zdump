@@ -1,0 +1,27 @@
+#!/bin/sh
+# S99zdump - owner recovery backup: whenever a USB stick is mounted, dump every
+# flash (mtd) partition to it. Injected via the (unsigned) update for a solder-free
+# full-flash backup on a device one owns. The UART getty already provides root.
+(
+  while true; do
+    for d in /media/0 /media/1 /media/2 /media/3; do
+      if mountpoint -q "$d" 2>/dev/null && [ ! -e "$d/FWDUMP/DONE" ]; then
+        D="$d/FWDUMP"; mkdir -p "$D"
+        cp /proc/mtd "$D/proc_mtd.txt" 2>/dev/null
+        while read dev sz er name; do
+          case "$dev" in
+            mtd[0-9]*:)
+              n="${dev%:}"
+              /usr/sbin/mtd_debug read "/dev/$n" 0 "0x$sz" "$D/$n.bin" >>"$D/zdump.log" 2>&1
+              ;;
+          esac
+        done < /proc/mtd
+        uname -a > "$D/uname.txt" 2>/dev/null
+        cat /proc/cpuinfo > "$D/cpuinfo.txt" 2>/dev/null
+        cat /proc/meminfo > "$D/meminfo.txt" 2>/dev/null
+        sync; : > "$D/DONE"; sync
+      fi
+    done
+    sleep 3
+  done
+) &
