@@ -36,3 +36,16 @@ Images are large: AVIC-Zx ≈ 1.5 GB uncompressed. Unsparse with `simg2img`, the
 - `simg2img` the system partition → `build.prop`, app list, the `su` binary's real behaviour.
 - Parse the `a55a5aa5` partition table fully (offsets/sizes/names).
 - Compare to the common Chinese i.MX6 Android head units (likely shared BSP).
+
+## AVIC-Zx30BT detailed intel (Ver106)
+- `ro.build.id=AVIC_W8300`, `ro.build.display.id=KM696` (platform code — adjacent to Gerda's
+  KM697+), `ro.product.name/device=AVIC_W8300`, `ro.product.model/board=Jupiter`.
+- Android **4.2.2** `user` build, `release-keys`, built 2024-04-26, `ro.product.cpu.abi=armeabi-v7a`.
+- `ro.product.version=WL_v1.060100` → **WebLink**-based smartphone link. `characteristics=tablet`.
+- Apps: iGO nav (`com.navngo.igo.navistate`), MapMyIndia, ADAS, Pioneer keycode handlers,
+  DIOReConnect (AppRadio/WebLink), MixTrax, JupiterHome launcher, IvonaTTS; standard AOSP set.
+- **Root:** `/system/bin/su` + `/system/xbin/su` present (+ `setuid`), **no** SuperSU/Magisk/
+  Superuser app → a bare `su`. Whether it's a usable backdoor vs a restricted (uid-checked) su
+  is **undetermined** — needs the system FS extracted and the `su` ELF disassembled. The system
+  partition is a clean (contiguous, non-OOB) non-ext4/non-sparse image, likely **yaffs2**; use a
+  yaffs2 extractor. This is the top open follow-up on this platform.
