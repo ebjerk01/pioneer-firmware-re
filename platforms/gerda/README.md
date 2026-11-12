@@ -88,3 +88,20 @@ A single raw flash image, **no encryption and no signature** observed, laid out 
   `/etc/securetty`, and `/etc/shadow` gives **root an empty password** — so the Linux
   core's UART yields an unauthenticated root shell. (This is the *connectivity* core; it
   does not by itself speed up or alter the native menus.)
+
+## Gerda family — cross-model (from the archived siblings)
+
+The Gerda platform spans dozens of Pioneer models (internal codes KM697–KM793+ seen in the
+model tables). Confirmed in the archive: **SPH-DA230DAB, SPH-DA130DAB, AVH-A3100DAB,
+AVH-A3200DAB, AVH-Z7100DAB** — all plaintext, all openable with `unpack_avh.py`.
+
+Key result: the **Linux connectivity subsystem (kernel + SquashFS rootfs) is shared byte-for-byte**
+across models — SPH-DA130DAB and AVH-Z7100DAB have the **identical** rootfs *and* kernel as the
+SPH-DA230DAB (only the uITRON main app / version differs: GERDAVER 08.10 / 08.15 / 08.24).
+AVH-A3100DAB and AVH-A3200DAB are a sibling Gerda *variant* (different rootfs+kernel hash). All
+share the component code `CVJ1945-A`.
+
+**Implication:** every DA230 finding — UART root (empty password), the unsigned-update self-dump
+technique, `mtd_debug`/`flashcp` on-device, the 20MD-free plaintext format — applies across the
+whole Gerda generation. Dual-version packages (e.g. AVH-Z7100DAB `_815_1815`) simply concatenate
+the 8.xx and 18.xx images, so `unpack_avh.py` reports two of each region.

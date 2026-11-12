@@ -26,10 +26,11 @@ models/           per-model findings
 
 ## Platforms covered
 
-| Platform | Internal code | SoC / OS | Wireless CP/AA | Models (so far) |
+| Platform | Internal code | SoC / OS | Firmware | Models (so far) |
 |----------|---------------|----------|----------------|-----------------|
-| [gerda](platforms/gerda/) | KM769 (and KM770/KM775) | Panasonic *Gerda*, dual Cortex-A9, uITRON + Linux | wired only | SPH-DA230DAB, MVH-2300NEX, MVH-Z5050BT, AVH-Z#### / DMH-Z#### (2017–19) |
-| [km951](platforms/km951/) | KM951 | newer (Qualcomm-class / Android-scale); **encrypted .avh** | wireless CarPlay | DMH-ZF9350BT, DMH-Z6350BT |
+| [gerda](platforms/gerda/) | KM697–KM793+ | Panasonic *Gerda*, dual Cortex-A9, uITRON + Linux | **plaintext, openable** | SPH-DA230DAB, SPH-DA130DAB, AVH-A3100/A3200DAB, AVH-Z7100DAB, MVH-Z5050BT … |
+| [imx6-android](platforms/imx6-android/) | PJ200 ("Jupiter") | Freescale/NXP **i.MX6** (Cortex-A9), **Android 4.2.2** | **plaintext, openable** (`a55a5aa5`) | AVIC-Zx10/20/30BT, AVIC-Fx7x/Fx8x, SPH-DA120, AVH-X8600/8800BT |
+| [km951](platforms/km951/) (20MD/23MD) | KM830/837/951/975 | newer encrypted generation | **encrypted** (`20MD`/`23MD`) | SPH-EVO64/93/950DAB, DMH-Z6350/ZF9350BT |
 
 ## Topics
 
